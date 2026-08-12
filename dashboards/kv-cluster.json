@@ -302,19 +302,19 @@
       "type": "timeseries"
     },
     {
-      "title": "Percentile Sync Write latencies",
-      "description": "For each node computed as:`histogram_quantile(0.99|0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))`",
+      "title": "Percentile SET latencies",
+      "description": "For each node computed as:`histogram_quantile(0.99|0.5, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))`",
       "_base": "panel",
       "_targets": [
         {
           "datasource": "{data-source:name}",
-          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))",
           "legendFormat": "99th {data-source:name} Sync SET",
           "_base": "target"
         },
         {
           "datasource": "{data-source:name}",
-          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))",
+          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))",
           "legendFormat": "50th {data-source:name} Sync SET",
           "_base": "target"
         }
@@ -335,20 +335,86 @@
       "type": "timeseries"
     },
     {
-      "title": "Percentile SET latencies",
-      "description": "For each node computed as:`histogram_quantile(0.99|0.5, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))`",
+      "title": "Percentile Sync Write latencies (majority)",
+      "description": "99th and 50th percentile sync write commit latencies for the `majority` durability level.\n\nComputed per node as: `histogram_quantile(0.99|0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority\"}[5m])))`",
       "_base": "panel",
       "_targets": [
         {
           "datasource": "{data-source:name}",
-          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))",
-          "legendFormat": "99th {data-source:name} Sync SET",
+          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority\"}[5m])))",
+          "legendFormat": "99th {data-source:name} majority",
           "_base": "target"
         },
         {
           "datasource": "{data-source:name}",
-          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_cmd_duration_seconds_bucket{opcode=\"SET\"}[10m])))",
-          "legendFormat": "50th {data-source:name} Sync SET",
+          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority\"}[5m])))",
+          "legendFormat": "50th {data-source:name} majority",
+          "_base": "target"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 1
+          },
+          "unit": "s"
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "type": "timeseries"
+    },
+    {
+      "title": "Percentile Sync Write latencies (majority_and_persist_on_master)",
+      "description": "99th and 50th percentile sync write commit latencies for the `majority_and_persist_on_master` durability level.\n\nComputed per node as: `histogram_quantile(0.99|0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority_and_persist_on_master\"}[5m])))`",
+      "_base": "panel",
+      "_targets": [
+        {
+          "datasource": "{data-source:name}",
+          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority_and_persist_on_master\"}[5m])))",
+          "legendFormat": "99th {data-source:name} majority_and_persist_on_master",
+          "_base": "target"
+        },
+        {
+          "datasource": "{data-source:name}",
+          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"majority_and_persist_on_master\"}[5m])))",
+          "legendFormat": "50th {data-source:name} majority_and_persist_on_master",
+          "_base": "target"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 1
+          },
+          "unit": "s"
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "type": "timeseries"
+    },
+    {
+      "title": "Percentile Sync Write latencies (persist_to_majority)",
+      "description": "99th and 50th percentile sync write commit latencies for the `persist_to_majority` durability level.\n\nComputed per node as: `histogram_quantile(0.99|0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))`",
+      "_base": "panel",
+      "_targets": [
+        {
+          "datasource": "{data-source:name}",
+          "expr": "histogram_quantile(0.99, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))",
+          "legendFormat": "99th {data-source:name} persist_to_majority",
+          "_base": "target"
+        },
+        {
+          "datasource": "{data-source:name}",
+          "expr": "histogram_quantile(0.50, sum by (le) (irate(kv_sync_write_commit_duration_seconds_bucket{level=\"persist_to_majority\"}[5m])))",
+          "legendFormat": "50th {data-source:name} persist_to_majority",
           "_base": "target"
         }
       ],
